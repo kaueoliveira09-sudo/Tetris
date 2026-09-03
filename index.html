@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Tetris Solo - 2 Jogadores</title>
+<title>Tetris Solo / 2 Jogadores</title>
 
 <style>
 
@@ -37,12 +37,10 @@ body{
     display:none !important;
 }
 
-/* =========================
-   LOGIN
-========================= */
+/* LOGIN */
 
 .login-box{
-    width:420px;
+    width:430px;
     max-width:100%;
 
     padding:35px;
@@ -158,15 +156,40 @@ button:hover{
     background:#211735;
 }
 
+.solo-button{
+    background:linear-gradient(
+        135deg,
+        #00aaff,
+        #00eaff
+    );
+}
+
+.duo-button{
+    background:linear-gradient(
+        135deg,
+        #7b2cff,
+        #ff2fcf
+    );
+}
+
 .message{
     min-height:25px;
     margin-top:12px;
     color:#ff7070;
 }
 
-/* =========================
-   TUTORIAL
-========================= */
+/* MODO */
+
+.mode-box{
+    margin:20px 0;
+}
+
+.mode-box h3{
+    margin-bottom:10px;
+    color:#aaa;
+}
+
+/* TUTORIAL */
 
 .panel{
     width:700px;
@@ -220,9 +243,7 @@ button:hover{
     border:1px solid #33234e;
 }
 
-/* =========================
-   JOGO
-========================= */
+/* JOGO */
 
 #gameScreen{
     display:block;
@@ -254,9 +275,7 @@ button:hover{
     color:#ccc;
 }
 
-/* =========================
-   DOIS JOGADORES
-========================= */
+/* PLAYERS */
 
 .players-container{
 
@@ -316,9 +335,7 @@ button:hover{
 
 }
 
-/* =========================
-   TABULEIRO
-========================= */
+/* BOARD */
 
 .board-wrapper{
 
@@ -354,9 +371,7 @@ button:hover{
 
 }
 
-/* =========================
-   PAINEL
-========================= */
+/* SIDEBAR */
 
 .sidebar{
 
@@ -430,9 +445,7 @@ button:hover{
 
 }
 
-/* =========================
-   PAUSA
-========================= */
+/* PAUSA */
 
 .pause-overlay{
 
@@ -462,9 +475,7 @@ button:hover{
 
 }
 
-/* =========================
-   MODAL
-========================= */
+/* MODAL */
 
 .modal{
 
@@ -523,9 +534,7 @@ button:hover{
     background:#241734;
 }
 
-/* =========================
-   RANKING
-========================= */
+/* RANKING */
 
 .ranking-item{
 
@@ -557,9 +566,7 @@ button:hover{
 
 }
 
-/* =========================
-   CONTROLES MOBILE
-========================= */
+/* MOBILE */
 
 .mobile-controls{
 
@@ -585,9 +592,7 @@ button:hover{
 
 }
 
-/* =========================
-   VENCEDOR
-========================= */
+/* VENCEDOR */
 
 .winner{
 
@@ -615,9 +620,7 @@ button:hover{
 
 }
 
-/* =========================
-   RESPONSIVO
-========================= */
+/* RESPONSIVO */
 
 @media(max-width:1100px){
 
@@ -657,13 +660,11 @@ button:hover{
     .mobile-controls{
 
         display:grid;
-
     }
 
     .controls{
 
         grid-template-columns:1fr;
-
     }
 
     .game-header{
@@ -691,7 +692,7 @@ button:hover{
 
 
 <!-- =====================================================
-     LOGIN / CADASTRO
+     LOGIN
 ===================================================== -->
 
 <section id="loginScreen" class="screen">
@@ -703,41 +704,60 @@ button:hover{
         <h1>TETRIS</h1>
 
         <p class="subtitle">
-            Desafio para 2 Jogadores
+            Escolha como deseja jogar
         </p>
 
 
-        <!-- =========================
-             JOGADOR 1
-        ========================== -->
+        <!-- SOLO -->
 
         <div class="login-player">
 
             <h3 class="player1-title">
-                🔵 JOGADOR 1
+                🔵 JOGADOR
             </h3>
 
             <input
                 id="username"
                 type="text"
                 maxlength="20"
-                placeholder="Nome do Jogador 1"
+                placeholder="Nome do jogador"
             >
 
             <input
                 id="password"
                 type="password"
-                placeholder="Senha do Jogador 1"
+                placeholder="Senha"
             >
 
         </div>
 
 
-        <!-- =========================
-             JOGADOR 2
-        ========================== -->
+        <div class="mode-box">
 
-        <div class="login-player">
+            <button
+                class="solo-button"
+                onclick="loginSolo()">
+
+                🎮 JOGAR SOLO
+
+            </button>
+
+            <button
+                class="duo-button"
+                onclick="showTwoPlayerLogin()">
+
+                👥 2 JOGADORES
+
+            </button>
+
+        </div>
+
+
+        <!-- CAMPOS DO JOGADOR 2 -->
+
+        <div
+            id="player2Login"
+            class="login-player hidden">
 
             <h3 class="player2-title">
                 🔴 JOGADOR 2
@@ -756,26 +776,34 @@ button:hover{
                 placeholder="Senha do Jogador 2"
             >
 
+            <button
+                class="duo-button"
+                onclick="loginTwoPlayers()">
+
+                🚀 ENTRAR COM 2 JOGADORES
+
+            </button>
+
         </div>
 
-
-        <button onclick="login()">
-            Entrar
-        </button>
 
         <button
             class="secondary"
             onclick="register()">
 
-            Criar contas
+            Criar conta(s)
+
         </button>
+
 
         <button
             class="secondary"
             onclick="openRanking()">
 
             🏆 Ver Ranking
+
         </button>
+
 
         <p
             id="loginMessage"
@@ -797,7 +825,10 @@ button:hover{
 
     <div class="panel">
 
-        <h1>🎮 TETRIS — 2 JOGADORES</h1>
+        <h1 id="tutorialTitle">
+            🎮 TETRIS
+        </h1>
+
 
         <div class="objective">
 
@@ -805,121 +836,144 @@ button:hover{
 
             <p>
                 🔵 <span id="tutorialPlayer1">
-                    Jogador 1
+                    Jogador
                 </span>
             </p>
 
-            <p style="margin-top:8px">
+            <p
+                id="tutorialPlayer2Row"
+                style="margin-top:8px">
+
                 🔴 <span id="tutorialPlayer2">
                     Jogador 2
                 </span>
+
             </p>
 
         </div>
+
 
         <div class="objective">
 
             <h3>🎯 OBJETIVO</h3>
 
-            <p>
-                Cada jogador possui seu próprio tabuleiro.
-                Complete linhas e faça a maior pontuação.
-            </p>
+            <p id="tutorialObjective">
 
-            <p style="margin-top:8px">
-                O jogo termina quando um dos jogadores
-                não conseguir mais encaixar suas peças.
+                Complete linhas e consiga
+                a maior pontuação possível.
+
             </p>
 
         </div>
 
-        <h3>👤 JOGADOR 1</h3>
+
+        <h3>🎮 CONTROLES</h3>
+
 
         <div class="controls">
 
             <div class="control">
-                A / D
+
+                A / ⬅️
+
                 <br>
-                Mover
+
+                Mover para esquerda
+
             </div>
 
+
             <div class="control">
-                W
+
+                D / ➡️
+
                 <br>
+
+                Mover para direita
+
+            </div>
+
+
+            <div class="control">
+
+                W / ⬆️
+
+                <br>
+
                 Girar
+
             </div>
 
+
             <div class="control">
-                S
+
+                S / ⬇️
+
                 <br>
+
                 Queda rápida
+
             </div>
 
+
             <div class="control">
+
                 ESPAÇO
+
                 <br>
+
                 Queda instantânea
+
+            </div>
+
+
+            <div class="control">
+
+                P
+
+                <br>
+
+                Pausar
+
             </div>
 
         </div>
 
-        <br>
-
-        <h3>👤 JOGADOR 2</h3>
-
-        <div class="controls">
-
-            <div class="control">
-                ⬅️ / ➡️
-                <br>
-                Mover
-            </div>
-
-            <div class="control">
-                ⬆️
-                <br>
-                Girar
-            </div>
-
-            <div class="control">
-                ⬇️
-                <br>
-                Queda rápida
-            </div>
-
-            <div class="control">
-                ENTER
-                <br>
-                Queda instantânea
-            </div>
-
-        </div>
 
         <div class="objective">
 
             <h3>📈 NÍVEIS</h3>
 
             <p>
+
                 A cada 10 linhas completadas,
-                o jogador sobe de nível.
+                você sobe de nível.
+
             </p>
 
             <p style="margin-top:8px">
-                As peças ficam mais rápidas
-                conforme o nível aumenta.
+
+                Quanto maior o nível,
+                mais rápidas ficam as peças.
+
             </p>
 
         </div>
 
+
         <button onclick="startGame()">
+
             🚀 COMEÇAR PARTIDA
+
         </button>
+
 
         <button
             class="secondary"
             onclick="openRanking()">
 
             🏆 Ranking
+
         </button>
 
     </div>
@@ -938,7 +992,9 @@ button:hover{
     <header class="game-header">
 
         <div class="game-title">
-            🎮 TETRIS — 2 PLAYERS
+
+            🎮 TETRIS
+
         </div>
 
         <div
@@ -949,20 +1005,25 @@ button:hover{
     </header>
 
 
-    <div class="players-container">
+    <div
+        id="playersContainer"
+        class="players-container">
 
 
-        <!-- ===============================
-             JOGADOR 1
-        ================================ -->
+        <!-- JOGADOR 1 -->
 
         <div class="player-area">
 
             <div class="player-name">
-                🔵 <span id="player1Name">
-                    JOGADOR 1
+
+                🔵
+
+                <span id="player1Name">
+                    JOGADOR
                 </span>
+
             </div>
+
 
             <div class="game-container">
 
@@ -977,47 +1038,60 @@ button:hover{
                             height="600">
                         </canvas>
 
+
                         <div
                             id="pauseOverlay1"
                             class="pause-overlay hidden">
 
                             <div>
-                                <h1>⏸️ PAUSADO</h1>
+
+                                <h1>
+                                    ⏸️ PAUSADO
+                                </h1>
+
                             </div>
 
                         </div>
 
                     </div>
 
+
                     <div class="mobile-controls">
 
-                        <button onclick="movePlayer(1,-1)">
+                        <button
+                            onclick="movePlayer(1,-1)">
                             ←
                         </button>
 
-                        <button onclick="rotatePlayer(1)">
+                        <button
+                            onclick="rotatePlayer(1)">
                             ↻
                         </button>
 
-                        <button onclick="movePlayer(1,1)">
+                        <button
+                            onclick="movePlayer(1,1)">
                             →
                         </button>
 
-                        <button onclick="softDropPlayer(1)">
+                        <button
+                            onclick="softDropPlayer(1)">
                             ↓
                         </button>
 
-                        <button onclick="hardDropPlayer(1)">
+                        <button
+                            onclick="hardDropPlayer(1)">
                             ⬇
                         </button>
 
-                        <button onclick="togglePause()">
+                        <button
+                            onclick="togglePause()">
                             ⏸
                         </button>
 
                     </div>
 
                 </div>
+
 
                 <aside class="sidebar">
 
@@ -1033,6 +1107,7 @@ button:hover{
 
                     </div>
 
+
                     <div class="stat-card">
 
                         <h3>NÍVEL</h3>
@@ -1045,6 +1120,7 @@ button:hover{
 
                     </div>
 
+
                     <div class="stat-card">
 
                         <h3>LINHAS</h3>
@@ -1056,6 +1132,7 @@ button:hover{
                         </div>
 
                     </div>
+
 
                     <div class="stat-card">
 
@@ -1079,17 +1156,22 @@ button:hover{
         </div>
 
 
-        <!-- ===============================
-             JOGADOR 2
-        ================================ -->
+        <!-- JOGADOR 2 -->
 
-        <div class="player-area">
+        <div
+            id="player2Area"
+            class="player-area">
 
             <div class="player-name">
-                🔴 <span id="player2Name">
+
+                🔴
+
+                <span id="player2Name">
                     JOGADOR 2
                 </span>
+
             </div>
+
 
             <div class="game-container">
 
@@ -1104,47 +1186,60 @@ button:hover{
                             height="600">
                         </canvas>
 
+
                         <div
                             id="pauseOverlay2"
                             class="pause-overlay hidden">
 
                             <div>
-                                <h1>⏸️ PAUSADO</h1>
+
+                                <h1>
+                                    ⏸️ PAUSADO
+                                </h1>
+
                             </div>
 
                         </div>
 
                     </div>
 
+
                     <div class="mobile-controls">
 
-                        <button onclick="movePlayer(2,-1)">
+                        <button
+                            onclick="movePlayer(2,-1)">
                             ←
                         </button>
 
-                        <button onclick="rotatePlayer(2)">
+                        <button
+                            onclick="rotatePlayer(2)">
                             ↻
                         </button>
 
-                        <button onclick="movePlayer(2,1)">
+                        <button
+                            onclick="movePlayer(2,1)">
                             →
                         </button>
 
-                        <button onclick="softDropPlayer(2)">
+                        <button
+                            onclick="softDropPlayer(2)">
                             ↓
                         </button>
 
-                        <button onclick="hardDropPlayer(2)">
+                        <button
+                            onclick="hardDropPlayer(2)">
                             ⬇
                         </button>
 
-                        <button onclick="togglePause()">
+                        <button
+                            onclick="togglePause()">
                             ⏸
                         </button>
 
                     </div>
 
                 </div>
+
 
                 <aside class="sidebar">
 
@@ -1160,6 +1255,7 @@ button:hover{
 
                     </div>
 
+
                     <div class="stat-card">
 
                         <h3>NÍVEL</h3>
@@ -1172,6 +1268,7 @@ button:hover{
 
                     </div>
 
+
                     <div class="stat-card">
 
                         <h3>LINHAS</h3>
@@ -1183,6 +1280,7 @@ button:hover{
                         </div>
 
                     </div>
+
 
                     <div class="stat-card">
 
@@ -1208,24 +1306,35 @@ button:hover{
     </div>
 
 
-    <div style="max-width:500px;margin:0 auto 25px">
+    <div
+        style="
+            max-width:500px;
+            margin:0 auto 25px;
+            padding:0 15px
+        ">
 
         <button onclick="togglePause()">
+
             ⏸️ Pausar
+
         </button>
+
 
         <button
             class="secondary"
             onclick="openHelp()">
 
             ❓ Ajuda — F1
+
         </button>
+
 
         <button
             class="secondary"
             onclick="openRanking()">
 
             🏆 Ranking
+
         </button>
 
     </div>
@@ -1245,36 +1354,58 @@ button:hover{
 
         <h1>❓ Ajuda</h1>
 
-        <h3>🔵 Jogador 1</h3>
 
-        <p>A / D — Mover</p>
-        <p>W — Girar</p>
-        <p>S — Queda rápida</p>
+        <h3>🎮 Modo Solo</h3>
+
+        <p>A / ⬅️ — Mover para esquerda</p>
+
+        <p>D / ➡️ — Mover para direita</p>
+
+        <p>W / ⬆️ — Girar</p>
+
+        <p>S / ⬇️ — Queda rápida</p>
+
         <p>ESPAÇO — Queda instantânea</p>
 
-        <br>
-
-        <h3>🔴 Jogador 2</h3>
-
-        <p>⬅️ / ➡️ — Mover</p>
-        <p>⬆️ — Girar</p>
-        <p>⬇️ — Queda rápida</p>
-        <p>ENTER — Queda instantânea</p>
 
         <br>
+
+
+        <h3>👥 Modo 2 Jogadores</h3>
 
         <p>
-            <b>P</b> — Pausar os dois jogadores
+            🔵 Jogador 1:
+            A / D / W / S / Espaço
         </p>
+
+        <p style="margin-top:6px">
+
+            🔴 Jogador 2:
+            Setas / Enter
+
+        </p>
+
+
+        <br>
+
+
+        <p>
+            <b>P</b> — Pausar
+        </p>
+
 
         <p>
             <b>F1</b> — Abrir ajuda
         </p>
 
+
         <br>
 
+
         <button onclick="closeHelp()">
+
             Fechar
+
         </button>
 
     </div>
@@ -1296,11 +1427,13 @@ button:hover{
 
         <div id="rankingList"></div>
 
+
         <button
             class="close"
             onclick="closeRanking()">
 
             Fechar
+
         </button>
 
     </div>
@@ -1318,11 +1451,17 @@ button:hover{
 
     <div class="modal-box">
 
-        <h1>💥 FIM DA PARTIDA</h1>
+        <h1 id="gameOverTitle">
+            💥 FIM DA PARTIDA
+        </h1>
+
 
         <div class="winner">
 
-            <p>🏆 VENCEDOR</p>
+            <p id="winnerLabel">
+                🏆 VENCEDOR
+            </p>
+
 
             <div id="winnerName">
                 -
@@ -1330,51 +1469,82 @@ button:hover{
 
         </div>
 
+
         <div class="stat-card">
 
             <h3>
+
                 🔵
+
                 <span id="finalName1">
-                    JOGADOR 1
+                    JOGADOR
                 </span>
+
             </h3>
+
 
             <div
                 id="finalScore1"
                 class="stat-value">
+
                 0
+
             </div>
 
         </div>
 
+
         <br>
 
-        <div class="stat-card">
+
+        <div
+            id="finalPlayer2Box"
+            class="stat-card">
 
             <h3>
+
                 🔴
+
                 <span id="finalName2">
                     JOGADOR 2
                 </span>
+
             </h3>
+
 
             <div
                 id="finalScore2"
                 class="stat-value">
+
                 0
+
             </div>
 
         </div>
 
+
         <button onclick="restartGame()">
+
             🔄 Jogar novamente
+
         </button>
+
+
+        <button
+            class="secondary"
+            onclick="backToLogin()">
+
+            🏠 Menu principal
+
+        </button>
+
 
         <button
             class="secondary"
             onclick="openRanking()">
 
             🏆 Ver Ranking
+
         </button>
 
     </div>
@@ -1385,13 +1555,16 @@ button:hover{
 <script>
 
 /* =====================================================
-   SISTEMA DE USUÁRIO
+   USUÁRIOS
 ===================================================== */
 
-let currentUser = null;
+let currentUser=null;
 
-let player1User = null;
-let player2User = null;
+let player1User=null;
+
+let player2User=null;
+
+let gameMode="solo";
 
 
 function getUsers(){
@@ -1414,102 +1587,70 @@ function saveUsers(users){
 
 
 /* =====================================================
-   CADASTRO DOS DOIS JOGADORES
+   MOSTRAR LOGIN 2 PLAYERS
+===================================================== */
+
+function showTwoPlayerLogin(){
+
+    document
+        .getElementById("player2Login")
+        .classList.remove("hidden");
+
+}
+
+
+/* =====================================================
+   CADASTRO
 ===================================================== */
 
 function register(){
 
-    const username =
+    const username=
         document
         .getElementById("username")
         .value
         .trim();
 
-    const password =
+    const password=
         document
         .getElementById("password")
         .value;
 
 
-    const username2 =
+    const username2=
         document
         .getElementById("username2")
         .value
         .trim();
 
-    const password2 =
+    const password2=
         document
         .getElementById("password2")
         .value;
 
 
-    const message =
+    const message=
         document.getElementById("loginMessage");
 
 
-    /* Jogador 1 */
+    if(username.length<3){
 
-    if(username.length < 3){
+        message.textContent=
+            "Digite um nome com pelo menos 3 caracteres.";
 
         message.style.color="#ff7070";
-
-        message.textContent =
-            "O nome do Jogador 1 precisa ter pelo menos 3 caracteres.";
 
         return;
 
     }
 
 
-    if(password.length < 3){
+    if(password.length<3){
+
+        message.textContent=
+            "A senha precisa ter pelo menos 3 caracteres.";
 
         message.style.color="#ff7070";
-
-        message.textContent =
-            "A senha do Jogador 1 precisa ter pelo menos 3 caracteres.";
-
-        return;
-
-    }
-
-
-    /* Jogador 2 */
-
-    if(username2.length < 3){
-
-        message.style.color="#ff7070";
-
-        message.textContent =
-            "O nome do Jogador 2 precisa ter pelo menos 3 caracteres.";
-
-        return;
-
-    }
-
-
-    if(password2.length < 3){
-
-        message.style.color="#ff7070";
-
-        message.textContent =
-            "A senha do Jogador 2 precisa ter pelo menos 3 caracteres.";
-
-        return;
-
-    }
-
-
-    /* Nomes diferentes */
-
-    if(
-        username.toLowerCase() ===
-        username2.toLowerCase()
-    ){
-
-        message.style.color="#ff7070";
-
-        message.textContent =
-            "Os dois jogadores precisam ter nomes diferentes.";
 
         return;
 
@@ -1519,203 +1660,358 @@ function register(){
     const users=getUsers();
 
 
-    /* Usuário 1 já existe */
-
     if(users[username]){
 
-        message.style.color="#ff7070";
+        message.textContent=
+            "Esse usuário já existe.";
 
-        message.textContent =
-            "O usuário do Jogador 1 já existe.";
+        message.style.color="#ff7070";
 
         return;
 
     }
 
 
-    /* Usuário 2 já existe */
+    /* Se estiver cadastrando 2 jogadores */
+
+    if(
+        document
+        .getElementById("player2Login")
+        .classList
+        .contains("hidden")
+    ){
+
+        users[username]={
+            password:password,
+            score:0
+        };
+
+        saveUsers(users);
+
+        message.textContent=
+            "Conta criada com sucesso!";
+
+        message.style.color="#55ff99";
+
+        return;
+
+    }
+
+
+    if(username2.length<3){
+
+        message.textContent=
+            "Digite o nome do Jogador 2.";
+
+        message.style.color="#ff7070";
+
+        return;
+
+    }
+
+
+    if(password2.length<3){
+
+        message.textContent=
+            "Digite a senha do Jogador 2.";
+
+        message.style.color="#ff7070";
+
+        return;
+
+    }
+
+
+    if(
+        username.toLowerCase()===
+        username2.toLowerCase()
+    ){
+
+        message.textContent=
+            "Os jogadores precisam ser diferentes.";
+
+        message.style.color="#ff7070";
+
+        return;
+
+    }
+
 
     if(users[username2]){
 
-        message.style.color="#ff7070";
-
-        message.textContent =
+        message.textContent=
             "O usuário do Jogador 2 já existe.";
+
+        message.style.color="#ff7070";
 
         return;
 
     }
 
 
-    /* Criar jogador 1 */
-
     users[username]={
-
         password:password,
-
         score:0
-
     };
 
 
-    /* Criar jogador 2 */
-
     users[username2]={
-
         password:password2,
-
         score:0
-
     };
 
 
     saveUsers(users);
 
 
-    message.style.color="#55ff99";
+    message.textContent=
+        "As duas contas foram criadas com sucesso!";
 
-    message.textContent =
-        "Contas dos dois jogadores criadas com sucesso!";
+    message.style.color="#55ff99";
 
 }
 
 
 /* =====================================================
-   LOGIN DOS DOIS JOGADORES
+   LOGIN SOLO
 ===================================================== */
 
-function login(){
+function loginSolo(){
 
-    const username =
+    const username=
         document
         .getElementById("username")
         .value
         .trim();
 
-    const password =
+    const password=
         document
         .getElementById("password")
         .value;
 
 
-    const username2 =
-        document
-        .getElementById("username2")
-        .value
-        .trim();
-
-    const password2 =
-        document
-        .getElementById("password2")
-        .value;
-
-
-    const message =
+    const message=
         document.getElementById("loginMessage");
 
 
     const users=getUsers();
 
 
-    /* Jogador 1 */
-
     if(!users[username]){
 
-        message.style.color="#ff7070";
+        message.textContent=
+            "Usuário não encontrado.";
 
-        message.textContent =
-            "Usuário do Jogador 1 não encontrado.";
+        message.style.color="#ff7070";
 
         return;
 
     }
 
 
-    if(users[username].password !== password){
+    if(users[username].password!==password){
+
+        message.textContent=
+            "Senha incorreta.";
 
         message.style.color="#ff7070";
-
-        message.textContent =
-            "Senha do Jogador 1 incorreta.";
 
         return;
 
     }
 
 
-    /* Jogador 2 */
-
-    if(!users[username2]){
-
-        message.style.color="#ff7070";
-
-        message.textContent =
-            "Usuário do Jogador 2 não encontrado.";
-
-        return;
-
-    }
-
-
-    if(users[username2].password !== password2){
-
-        message.style.color="#ff7070";
-
-        message.textContent =
-            "Senha do Jogador 2 incorreta.";
-
-        return;
-
-    }
-
-
-    /* Não permitir o mesmo jogador duas vezes */
-
-    if(
-        username.toLowerCase() ===
-        username2.toLowerCase()
-    ){
-
-        message.style.color="#ff7070";
-
-        message.textContent =
-            "Os jogadores precisam ser diferentes.";
-
-        return;
-
-    }
-
-
-    /* Login */
+    gameMode="solo";
 
     currentUser=username;
 
     player1User=username;
 
+    player2User=null;
+
+
+    showTutorial();
+
+}
+
+
+/* =====================================================
+   LOGIN 2 PLAYERS
+===================================================== */
+
+function loginTwoPlayers(){
+
+    const username=
+        document
+        .getElementById("username")
+        .value
+        .trim();
+
+    const password=
+        document
+        .getElementById("password")
+        .value;
+
+
+    const username2=
+        document
+        .getElementById("username2")
+        .value
+        .trim();
+
+    const password2=
+        document
+        .getElementById("password2")
+        .value;
+
+
+    const message=
+        document.getElementById("loginMessage");
+
+
+    const users=getUsers();
+
+
+    if(!users[username]){
+
+        message.textContent=
+            "Usuário do Jogador 1 não encontrado.";
+
+        message.style.color="#ff7070";
+
+        return;
+
+    }
+
+
+    if(users[username].password!==password){
+
+        message.textContent=
+            "Senha do Jogador 1 incorreta.";
+
+        message.style.color="#ff7070";
+
+        return;
+
+    }
+
+
+    if(!users[username2]){
+
+        message.textContent=
+            "Usuário do Jogador 2 não encontrado.";
+
+        message.style.color="#ff7070";
+
+        return;
+
+    }
+
+
+    if(users[username2].password!==password2){
+
+        message.textContent=
+            "Senha do Jogador 2 incorreta.";
+
+        message.style.color="#ff7070";
+
+        return;
+
+    }
+
+
+    if(
+        username.toLowerCase()===
+        username2.toLowerCase()
+    ){
+
+        message.textContent=
+            "Os jogadores precisam ser diferentes.";
+
+        message.style.color="#ff7070";
+
+        return;
+
+    }
+
+
+    gameMode="duo";
+
+    player1User=username;
+
     player2User=username2;
 
+    currentUser=username;
 
-    /* Mostrar nomes no tutorial */
+
+    showTutorial();
+
+}
+
+
+/* =====================================================
+   TUTORIAL
+===================================================== */
+
+function showTutorial(){
+
+    document
+        .getElementById("loginScreen")
+        .classList.add("hidden");
+
+
+    document
+        .getElementById("tutorialScreen")
+        .classList.remove("hidden");
+
 
     document.getElementById(
         "tutorialPlayer1"
     ).textContent=player1User;
 
 
-    document.getElementById(
-        "tutorialPlayer2"
-    ).textContent=player2User;
+    if(gameMode==="solo"){
+
+        document.getElementById(
+            "tutorialTitle"
+        ).textContent=
+            "🎮 TETRIS — MODO SOLO";
 
 
-    /* Trocar tela */
+        document.getElementById(
+            "tutorialPlayer2Row"
+        ).classList.add("hidden");
 
-    document
-        .getElementById("loginScreen")
-        .classList.add("hidden");
 
-    document
-        .getElementById("tutorialScreen")
-        .classList.remove("hidden");
+        document.getElementById(
+            "tutorialObjective"
+        ).textContent=
+            "Complete o máximo de linhas possível e tente bater seu próprio recorde.";
+
+    }else{
+
+        document.getElementById(
+            "tutorialTitle"
+        ).textContent=
+            "🎮 TETRIS — 2 JOGADORES";
+
+
+        document.getElementById(
+            "tutorialPlayer2Row"
+        ).classList.remove("hidden");
+
+
+        document.getElementById(
+            "tutorialPlayer2"
+        ).textContent=player2User;
+
+
+        document.getElementById(
+            "tutorialObjective"
+        ).textContent=
+            "Cada jogador possui seu próprio tabuleiro. Quando um jogador perder, o jogo termina.";
+
+    }
 
 }
 
@@ -1725,18 +2021,26 @@ function login(){
 ===================================================== */
 
 const COLS=10;
+
 const ROWS=20;
+
 const BLOCK=30;
 
 
 const colors={
 
     I:"#00eaff",
+
     O:"#ffe600",
+
     T:"#a855f7",
+
     S:"#22c55e",
+
     Z:"#ef4444",
+
     J:"#3b82f6",
+
     L:"#f97316"
 
 };
@@ -1745,11 +2049,17 @@ const colors={
 const colorByNumber={
 
     1:colors.I,
+
     2:colors.O,
+
     3:colors.T,
+
     4:colors.S,
+
     5:colors.Z,
+
     6:colors.J,
+
     7:colors.L
 
 };
@@ -1795,64 +2105,52 @@ const pieces={
 
 
 /* =====================================================
-   ESTADO DOS JOGADORES
+   ESTADO
 ===================================================== */
 
 const players={
 
     1:{
-
         board:null,
         currentPiece:null,
         nextPiece:null,
-
         x:0,
         y:0,
-
         score:0,
         lines:0,
         level:1,
-
         dropInterval:800,
         lastTime:0,
-
         canvas:null,
         ctx:null,
-
         nextCanvas:null,
         nextCtx:null
-
     },
 
     2:{
-
         board:null,
         currentPiece:null,
         nextPiece:null,
-
         x:0,
         y:0,
-
         score:0,
         lines:0,
         level:1,
-
         dropInterval:800,
         lastTime:0,
-
         canvas:null,
         ctx:null,
-
         nextCanvas:null,
         nextCtx:null
-
     }
 
 };
 
 
 let running=false;
+
 let paused=false;
+
 let animation;
 
 
@@ -1894,7 +2192,7 @@ function createBoard(){
 
     return Array.from(
         {length:ROWS},
-        () => Array(COLS).fill(0)
+        ()=>Array(COLS).fill(0)
     );
 
 }
@@ -1906,7 +2204,9 @@ function createBoard(){
 
 function randomPiece(){
 
-    const keys=Object.keys(pieces);
+    const keys=
+        Object.keys(pieces);
+
 
     const key=
         keys[
@@ -1914,6 +2214,7 @@ function randomPiece(){
                 Math.random()*keys.length
             )
         ];
+
 
     return pieces[key].map(
         row=>[...row]
@@ -1999,6 +2300,7 @@ function drawPlayer(id){
 
     ctx.fillStyle="#030303";
 
+
     ctx.fillRect(
         0,
         0,
@@ -2011,6 +2313,7 @@ function drawPlayer(id){
 
     ctx.strokeStyle=
         "rgba(255,255,255,.035)";
+
 
     ctx.lineWidth=1;
 
@@ -2053,21 +2356,33 @@ function drawPlayer(id){
     }
 
 
-    /* Peças fixas */
+    /* Fixas */
 
-    for(let y=0;y<ROWS;y++){
+    if(p.board){
 
-        for(let x=0;x<COLS;x++){
+        for(
+            let y=0;
+            y<ROWS;
+            y++
+        ){
 
-            if(p.board[y][x]){
+            for(
+                let x=0;
+                x<COLS;
+                x++
+            ){
 
-                drawBlock(
-                    ctx,
-                    x,
-                    y,
-                    p.board[y][x],
-                    BLOCK
-                );
+                if(p.board[y][x]){
+
+                    drawBlock(
+                        ctx,
+                        x,
+                        y,
+                        p.board[y][x],
+                        BLOCK
+                    );
+
+                }
 
             }
 
@@ -2076,7 +2391,7 @@ function drawPlayer(id){
     }
 
 
-    /* Peça atual */
+    /* Atual */
 
     if(p.currentPiece){
 
@@ -2118,7 +2433,7 @@ function drawPlayer(id){
 
 
 /* =====================================================
-   PRÓXIMA PEÇA
+   PRÓXIMA
 ===================================================== */
 
 function drawNextPlayer(id){
@@ -2129,6 +2444,16 @@ function drawNextPlayer(id){
 
 
     ctx.clearRect(
+        0,
+        0,
+        120,
+        120
+    );
+
+
+    ctx.fillStyle="#030303";
+
+    ctx.fillRect(
         0,
         0,
         120,
@@ -2199,6 +2524,10 @@ function collision(id){
     const p=players[id];
 
 
+    if(!p.currentPiece)
+        return false;
+
+
     for(
         let y=0;
         y<p.currentPiece.length;
@@ -2216,6 +2545,7 @@ function collision(id){
 
 
             const nx=p.x+x;
+
             const ny=p.y+y;
 
 
@@ -2250,7 +2580,7 @@ function collision(id){
 
 
 /* =====================================================
-   FIXAR PEÇA
+   MERGE
 ===================================================== */
 
 function mergePlayer(id){
@@ -2294,7 +2624,7 @@ function mergePlayer(id){
 
 
 /* =====================================================
-   LIMPAR LINHAS
+   LINHAS
 ===================================================== */
 
 function clearLinesPlayer(id){
@@ -2364,7 +2694,9 @@ function clearLinesPlayer(id){
 
 
         playSound(
-            cleared===4 ? 700 : 500
+            cleared===4
+            ? 700
+            : 500
         );
 
     }
@@ -2382,7 +2714,8 @@ function spawnPlayer(id){
 
 
     p.currentPiece=
-        p.nextPiece || randomPiece();
+        p.nextPiece ||
+        randomPiece();
 
 
     p.nextPiece=
@@ -2390,7 +2723,7 @@ function spawnPlayer(id){
 
 
     p.x=
-        Math.floor(COLS/2) -
+        Math.floor(COLS/2)-
         Math.ceil(
             p.currentPiece[0].length/2
         );
@@ -2417,7 +2750,10 @@ function spawnPlayer(id){
 
 function movePlayer(id,direction){
 
-    if(!running || paused)
+    if(
+        !running ||
+        paused
+    )
         return;
 
 
@@ -2440,12 +2776,15 @@ function movePlayer(id,direction){
 
 
 /* =====================================================
-   QUEDA
+   SOFT DROP
 ===================================================== */
 
 function softDropPlayer(id){
 
-    if(!running || paused)
+    if(
+        !running ||
+        paused
+    )
         return;
 
 
@@ -2477,12 +2816,15 @@ function softDropPlayer(id){
 
 
 /* =====================================================
-   QUEDA INSTANTÂNEA
+   HARD DROP
 ===================================================== */
 
 function hardDropPlayer(id){
 
-    if(!running || paused)
+    if(
+        !running ||
+        paused
+    )
         return;
 
 
@@ -2538,7 +2880,10 @@ function hardDropPlayer(id){
 
 function rotatePlayer(id){
 
-    if(!running || paused)
+    if(
+        !running ||
+        paused
+    )
         return;
 
 
@@ -2576,9 +2921,7 @@ function rotatePlayer(id){
             x++
         ){
 
-            rotated[x][
-                rows-1-y
-            ]=
+            rotated[x][rows-1-y]=
                 p.currentPiece[y][x];
 
         }
@@ -2646,7 +2989,13 @@ function gameLoop(time){
 
     if(!paused){
 
-        for(let id=1;id<=2;id++){
+        const ids=
+            gameMode==="solo"
+            ? [1]
+            : [1,2];
+
+
+        for(const id of ids){
 
             const p=players[id];
 
@@ -2670,7 +3019,12 @@ function gameLoop(time){
 
     drawPlayer(1);
 
-    drawPlayer(2);
+
+    if(gameMode==="duo"){
+
+        drawPlayer(2);
+
+    }
 
 
     animation=
@@ -2700,8 +3054,10 @@ function startGame(){
     document.getElementById(
         "playerDisplay"
     ).textContent=
-        "🔵 "+player1User+
-        "  VS  🔴 "+player2User;
+        gameMode==="solo"
+        ? "🎮 MODO SOLO — "+player1User
+        : "🔵 "+player1User+
+          " VS 🔴 "+player2User;
 
 
     document.getElementById(
@@ -2711,21 +3067,44 @@ function startGame(){
 
 
     document.getElementById(
-        "player2Name"
-    ).textContent=
-        player2User;
-
-
-    document.getElementById(
         "finalName1"
     ).textContent=
         player1User;
 
 
-    document.getElementById(
-        "finalName2"
-    ).textContent=
-        player2User;
+    if(gameMode==="solo"){
+
+        document
+            .getElementById("player2Area")
+            .classList.add("hidden");
+
+        document
+            .getElementById("finalPlayer2Box")
+            .classList.add("hidden");
+
+    }else{
+
+        document
+            .getElementById("player2Area")
+            .classList.remove("hidden");
+
+        document
+            .getElementById("finalPlayer2Box")
+            .classList.remove("hidden");
+
+
+        document.getElementById(
+            "player2Name"
+        ).textContent=
+            player2User;
+
+
+        document.getElementById(
+            "finalName2"
+        ).textContent=
+            player2User;
+
+    }
 
 
     for(let id=1;id<=2;id++){
@@ -2754,6 +3133,10 @@ function startGame(){
 
         updateStats(id);
 
+        drawPlayer(id);
+
+        drawNextPlayer(id);
+
     }
 
 
@@ -2774,15 +3157,21 @@ function startGame(){
 
     spawnPlayer(1);
 
-    spawnPlayer(2);
+
+    if(gameMode==="duo"){
+
+        spawnPlayer(2);
+
+    }
 
 
-    players[1].lastTime=
+    const now=
         performance.now();
 
 
-    players[2].lastTime=
-        performance.now();
+    players[1].lastTime=now;
+
+    players[2].lastTime=now;
 
 
     cancelAnimationFrame(animation);
@@ -2828,10 +3217,6 @@ function gameOver(loser){
     cancelAnimationFrame(animation);
 
 
-    const winner=
-        loser===1 ? 2 : 1;
-
-
     const score1=
         players[1].score;
 
@@ -2843,16 +3228,54 @@ function gameOver(loser){
     let winnerText;
 
 
-    if(score1===score2){
+    if(gameMode==="solo"){
 
-        winnerText="🤝 EMPATE!";
+        winnerText=
+            "🎮 "+player1User;
+
+
+        document.getElementById(
+            "gameOverTitle"
+        ).textContent=
+            "💥 FIM DO JOGO";
+
+
+        document.getElementById(
+            "winnerLabel"
+        ).textContent=
+            "🏆 SEU RESULTADO";
 
     }else{
 
-        winnerText=
-            winner===1
-            ? "🔵 "+player1User
-            : "🔴 "+player2User;
+        const winner=
+            loser===1 ? 2 : 1;
+
+
+        if(score1===score2){
+
+            winnerText=
+                "🤝 EMPATE!";
+
+        }else{
+
+            winnerText=
+                winner===1
+                ? "🔵 "+player1User
+                : "🔴 "+player2User;
+
+        }
+
+
+        document.getElementById(
+            "gameOverTitle"
+        ).textContent=
+            "💥 FIM DA PARTIDA";
+
+
+        document.getElementById(
+            "winnerLabel"
+        ).textContent=
+            "🏆 VENCEDOR";
 
     }
 
@@ -2889,7 +3312,7 @@ function gameOver(loser){
 
 
 /* =====================================================
-   SALVAR PONTUAÇÃO
+   SALVAR RECORDES
 ===================================================== */
 
 function saveScore(score1,score2){
@@ -2902,17 +3325,20 @@ function saveScore(score1,score2){
         score1>users[player1User].score
     ){
 
-        users[player1User].score=score1;
+        users[player1User].score=
+            score1;
 
     }
 
 
     if(
+        gameMode==="duo" &&
         users[player2User] &&
         score2>users[player2User].score
     ){
 
-        users[player2User].score=score2;
+        users[player2User].score=
+            score2;
 
     }
 
@@ -2947,13 +3373,15 @@ function togglePause(){
         .getElementById("pauseOverlay2")
         .classList.toggle(
             "hidden",
-            !paused
+            !paused ||
+            gameMode==="solo"
         );
 
 
     if(!paused){
 
-        const now=performance.now();
+        const now=
+            performance.now();
 
 
         players[1].lastTime=now;
@@ -3088,13 +3516,48 @@ function escapeHTML(text){
 
 
 /* =====================================================
+   MENU PRINCIPAL
+===================================================== */
+
+function backToLogin(){
+
+    running=false;
+
+    paused=false;
+
+
+    cancelAnimationFrame(animation);
+
+
+    document
+        .getElementById("gameOverModal")
+        .classList.add("hidden");
+
+
+    document
+        .getElementById("gameScreen")
+        .classList.add("hidden");
+
+
+    document
+        .getElementById("tutorialScreen")
+        .classList.add("hidden");
+
+
+    document
+        .getElementById("loginScreen")
+        .classList.remove("hidden");
+
+}
+
+
+/* =====================================================
    TECLADO
 ===================================================== */
 
 document.addEventListener(
     "keydown",
     event=>{
-
 
         /* F1 */
 
@@ -3128,7 +3591,75 @@ document.addEventListener(
         }
 
 
-        /* Jogador 1 */
+        /* SOLO */
+
+        if(gameMode==="solo"){
+
+            if(
+                event.key.toLowerCase()==="a" ||
+                event.key==="ArrowLeft"
+            ){
+
+                event.preventDefault();
+
+                movePlayer(1,-1);
+
+            }
+
+
+            else if(
+                event.key.toLowerCase()==="d" ||
+                event.key==="ArrowRight"
+            ){
+
+                event.preventDefault();
+
+                movePlayer(1,1);
+
+            }
+
+
+            else if(
+                event.key.toLowerCase()==="w" ||
+                event.key==="ArrowUp"
+            ){
+
+                event.preventDefault();
+
+                rotatePlayer(1);
+
+            }
+
+
+            else if(
+                event.key.toLowerCase()==="s" ||
+                event.key==="ArrowDown"
+            ){
+
+                event.preventDefault();
+
+                softDropPlayer(1);
+
+            }
+
+
+            else if(
+                event.code==="Space"
+            ){
+
+                event.preventDefault();
+
+                hardDropPlayer(1);
+
+            }
+
+
+            return;
+
+        }
+
+
+        /* JOGADOR 1 */
 
         if(
             event.key.toLowerCase()==="a"
@@ -3185,7 +3716,7 @@ document.addEventListener(
         }
 
 
-        /* Jogador 2 */
+        /* JOGADOR 2 */
 
         else if(
             event.key==="ArrowLeft"
